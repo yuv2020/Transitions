@@ -1,38 +1,376 @@
-.App {
-  text-align: center;
-}
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.image-effects-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  align-items: center;
+  height: 100vh;
+  
+}
+.glass {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.glass--1,
+.glass--2 {
+  background-size: 110% 110%;
+}
+
+.glass--1 {
+  background: url(https://source.unsplash.com/random/800x800?spring);
+}
+
+.glass--2 {
+  background: url(https://source.unsplash.com/random/800x800?blossom);
+}
+.cutopaste img {
+  --_g: 10% /45% 45% no-repeat linear-gradient(#000 0 0);
+  --m:
+    left   var(--_i, 0%) top    var(--_g),
+    bottom var(--_i, 0%) left   var(--_g),
+    top    var(--_i, 0%) right  var(--_g),
+    right  var(--_i, 0%) bottom var(--_g);
+  -webkit-mask: var(--m);
+          mask: var(--m);
+  filter: grayscale();
+  animation: autoTransition 3s linear infinite; /* Automatically transition */
+}
+.cutopaste body {
+  margin: 0;
+  background: #c9697a;
+  display: grid;
+  min-height: 100vh;
+  grid-auto-flow :column;
+  place-content: center;
+  gap: 40px;
+}
+@keyframes autoTransition {
+  0%, 100% {
+    --_i: 0%;
+    filter: grayscale(1); /* Start in grayscale */
+  }
+  50% {
+    --_i: 10%;
+    filter: grayscale(0); 
+  }
+}
+.image-container {
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  position: relative;
+
+  transition: all 1s ease; /* Smooth transition */
+}
+
+.image-container img {
+  --s: 200px; 
+  
+  width: var(--s);
+  aspect-ratio: 1;
+  box-sizing: border-box;
+  padding:0; 
+  background: #8A9B0F;
+  cursor: pointer;
+  transition: padding-right 1s ease, transform 1s ease;
+}
+.image-container.page-flip img{
+  padding-right:200
+}
+/* Zoom In and Out */
+.image-container.zoom-in img {
+  transform: scale(1.5);
+}
+.image-container.glitch img {
+  position: relative;
   color: white;
+  font-size: 2em;
+  text-align: center;
+}
+.image-container.bounce img {
+  animation: bounce 1s ease infinite;
+}
+.image-container.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
-.App-link {
-  color: #61dafb;
+.image-container.lightbox img {
+  max-width: 90%;
+  max-height: 90%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.image-container.lightbox.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
   }
-  to {
-    transform: rotate(360deg);
+  40% {
+    transform: translateY(-30px);
   }
+  60% {
+    transform: translateY(-15px);
+  }
+}
+.image-container.glitch::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  clip: rect(0, 0, 0, 0);
+  animation: glitch-anim 1s infinite;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(0, 0, 0, 0); }
+  25% { clip: rect(0, 100%, 50%, 0); }
+  50% { clip: rect(50%, 100%, 100%, 0); }
+  75% { clip: rect(0, 0, 0, 0); }
+  100% { clip: rect(0, 0, 0, 0); }
+}
+
+.image-container.zoom-out img {
+  transform: scale(0.5);
+}
+@keyframes grayscaleToColor {
+  0% {
+    --_i: 0%;
+    filter: grayscale(1);
+  }
+  100% {
+    --_i: 10%;
+    filter: grayscale(0);
+  }
+}
+.image-container2{  margin: 0;
+  background: #c9697a;
+  display: grid;
+  min-height: 100vh;
+  grid-auto-flow :column;
+  place-content: center;
+  gap: 40px;}
+.image-container.grayscaleToColor img {
+  --_g: 10% /45% 45% no-repeat linear-gradient(#000 0 0);
+  --m:
+    left   var(--_i,0%) top    var(--_g),
+    bottom var(--_i,0%) left   var(--_g),
+    top    var(--_i,0%) right  var(--_g),
+    right  var(--_i,0%) bottom var(--_g);
+  -webkit-mask: var(--m);
+          mask: var(--m);
+  filter: grayscale(1); /* Start with grayscale */
+  transition: .3s linear;
+  cursor: pointer;
+
+  /* Apply the animation */
+  animation: grayscaleToColor 3s forwards; /* Adjust duration as needed */
+}
+/* Slide Up and Down */
+.image-container.slide-up {
+  transform: translateY(-100%);
+}
+
+.image-container.slide-down {
+  transform: translateY(100%);
+}
+
+/* Mosaic Effect */
+.image-container img.mosaic {
+  filter: blur(10px); 
+  transform: scale(0.5); /* Scale down to mimic pixelation */
+}
+
+/* Unmosaic Effect */
+.image-container img.unmosaic {
+  filter: blur(0);
+  transform: scale(1); 
+}
+.image-container.tilt-3d {
+  transform: rotateX(15deg) rotateY(15deg); 
+}
+.image-container.rotate-3d {
+  transform: rotateX(30deg) rotateY(30deg) rotateZ(30deg); 
+}
+.image-container.flip-horizontal {
+  transform: rotateY(180deg); 
+}
+.image-container.block-to-full {
+  transform: scale(0);
+  opacity: 0;
+}
+@property --_l {
+  syntax: "<length>";
+  initial-value: 0px;
+  inherits: true;
+}
+@property --_r {
+  syntax: "<length>";
+  initial-value: 0px;
+  inherits: true;
+}
+.image-container.bookout-zoom-in img {
+  --d: 18px;  /* the depth */
+  --a: 20deg; /* the angle */
+  --x: 10px;
+
+  width: 250px; 
+  aspect-ratio: 1.1; 
+  object-fit: cover;
+  padding-block: var(--d);
+  
+  transform: perspective(400px) rotateY(calc(var(--_i,1)*var(--a))) scale(1.5); /* Added zoom-in scale */
+  outline: var(--d) solid #0008;
+  outline-offset: calc(-1*var(--d));
+  
+  --_d: calc(100% - var(--d));
+  --_l: 0px;
+  --_r: 0px;
+  clip-path: polygon(
+    var(--_l) calc(var(--_d) - var(--x)),
+    var(--_l) calc(var(--d)  + var(--x)), 
+    var(--d) var(--d),var(--_d) var(--d),
+    calc(var(--_d) + var(--_r)) calc(var(--d)  + var(--x)),
+    calc(var(--_d) + var(--_r)) calc(var(--_d) - var(--x)),  
+    var(--_d) var(--_d),var(--d) var(--_d)
+  );
+  
+  transition: transform 2s, --_r .15s, --_l .15s .15s;
+  transition-timing-function: linear;
+  cursor: pointer;
+}
+
+.image-container.bookout img {
+  --d: 18px;  /* the depth */
+  --a: 20deg; /* the angle */
+  
+  --x: 10px;
+  
+  width: 250px; 
+  aspect-ratio: 1.1;
+  object-fit: cover;
+  padding-block: var(--d);
+  transform: perspective(400px) rotateY(calc(var(--_i,1)*var(--a)));
+  outline: var(--d) solid #0008;
+  outline-offset: calc(-1*var(--d));
+  --_d: calc(100% - var(--d));
+  --_l: 0px;
+  --_r: 0px;
+  clip-path: polygon(
+    var(--_l) calc(var(--_d) - var(--x)),
+    var(--_l) calc(var(--d)  + var(--x)), 
+    var(--d) var(--d),var(--_d) var(--d),
+    calc(var(--_d) + var(--_r)) calc(var(--d)  + var(--x)),
+    calc(var(--_d) + var(--_r)) calc(var(--_d) - var(--x)),  
+    var(--_d) var(--_d),var(--d) var(--_d)
+   );
+  transition: transform 2s,--_r .15s,--_l .15s .15s;
+  transition-timing-function: linear;
+  cursor: pointer;
+}
+
+.image-container.bookout-zoom-out img {
+  --d: 18px;  /* the depth */
+  --a: 20deg; /* the angle */
+  --x: 10px;
+
+  width: 250px; /* control the size */
+  aspect-ratio: 1.1; /* you can use 1 as ratio but I found 1.1 a little better */
+  object-fit: cover;
+  padding-block: var(--d);
+  
+  transform: perspective(400px) rotateY(calc(var(--_i,1)*var(--a))) scale(0.5); /* Added zoom-out scale */
+  outline: var(--d) solid #0008;
+  outline-offset: calc(-1*var(--d));
+  
+  --_d: calc(100% - var(--d));
+  --_l: 0px;
+  --_r: 0px;
+  clip-path: polygon(
+    var(--_l) calc(var(--_d) - var(--x)),
+    var(--_l) calc(var(--d)  + var(--x)), 
+    var(--d) var(--d),var(--_d) var(--d),
+    calc(var(--_d) + var(--_r)) calc(var(--d)  + var(--x)),
+    calc(var(--_d) + var(--_r)) calc(var(--_d) - var(--x)),  
+    var(--_d) var(--_d),var(--d) var(--_d)
+  );
+  
+  /* Transition */
+  transition: transform .3s, --_r .15s, --_l .15s .15s;
+  transition-timing-function: linear;
+  cursor: pointer;
+}
+
+.image-container.expand {
+  /* Expand to full size */
+  transform: scale(1);
+  opacity: 1;
+}
+
+.image-container.expand img {
+  /* Reveal the image */
+  transform: scale(1);
+  opacity: 1;
+}
+/* 3D Flip Animation */
+.image-container.flip-3d {
+  transform-style: preserve-3d;
+  transition: transform 1s;
+}
+
+.image-container.flip-3d img {
+  backface-visibility: hidden;
+}
+
+.image-container.flip-3d.flipped {
+  transform: rotateY(180deg);
+}
+
+/* 3D Cube Rotate */
+.image-container.cube-rotate {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+}
+
+.image-container.cube-rotate.cube {
+  transform: rotateY(90deg);
+}
+
+/* 3D Unfold Animation */
+.image-container.unfold-3d {
+  perspective: 1200px;
+  transform-origin: top;
+  transform-style: preserve-3d;
+  transition: transform 1s, opacity 1s;
+}
+
+.image-container.unfold-3d.folded {
+  transform: rotateX(-90deg);
+  opacity: 0;
+}
+
+.image-container.unfold-3d.unfolded {
+  transform: rotateX(0);
+  opacity: 1;
 }
